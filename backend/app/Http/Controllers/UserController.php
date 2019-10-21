@@ -139,11 +139,22 @@ class UserController extends Controller
 
 
     //  Metodo extras
+    //  Buscar usuário por nome
+    public function findName($nome) {
+        $users = User::where('nome', 'LIKE', "%$nome%")->get();
+
+        if(empty($users)) {
+            return response()->json([
+                'message' => 'Não encontrado.'
+            ], 404);
+        }
+
+        return response()->json($users);
+    }
+
     //  Buscar usuário por cidade
     public function findCity($cidade) {
-        $users = User::all()->where('cidade', 'like', 'Diamantina');
-
-        //dd($users);
+        $users = User::where('cidade', 'LIKE', "%$cidade%")->get();
 
         if(empty($users)) {
             return response()->json([
@@ -156,7 +167,7 @@ class UserController extends Controller
 
     //  Buscar usuário por estado
     public function findState($estado) {
-        $users = User::all()->where('estado', 'like', 'Minas Gerais');
+        $users = User::where('estado', 'LIKE', "%$estado%")->get();
 
         if(empty($users)) {
             return response()->json([
@@ -169,12 +180,22 @@ class UserController extends Controller
 
     //  Buscar usuário por linguagem preferida
     public function findLanguage($language) {
+        $users = User::where('linguagem_pref', 'LIKE', "%$language%")->get();
+
+        if(empty($users)) {
+            return response()->json([
+                'message' => 'Não encontrado.'
+            ], 404);
+        }
+
+        return response()->json($users);
     }
 
 
     //  Buscar usuário por cidade e linguagem preferida
-    public function findCity_LP($cidade_lig) {
-        $users = User::where();
+    public function findCity_LP($cidade, $language) {
+        $users = User::where('cidade', 'LIKE', "%$cidade%")
+                     ->where('linguagem_pref', 'LIKE', "%$language%")->get();
 
         if(empty($users)) {
             return response()->json([
@@ -185,9 +206,10 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    //  Buscar usuário por estado
-    public function findState_LP($estado_lig) {
-        $users = User::where();
+    //  Buscar usuário por estado e linguagem preferida
+    public function findState_LP($estado, $language) {
+        $users = User::where('estado', 'LIKE', "%$estado%")
+                     ->where('linguagem_pref', 'LIKE', "%$language%")->get();
 
         if(empty($users)) {
             return response()->json([
@@ -197,64 +219,4 @@ class UserController extends Controller
 
         return response()->json($users);
     }
-
-
-    public function register(Request $request){
-        $validated = $request->validated();
-
-        if ($validated->fails()){
-            return response()->json($validated->errors()->toJson(), 400);
-        }
-
-        $user = User::create([
-            'nome'          => $request->get('nome'),
-            'email'         => $request->get('email'),
-            'password'      => Hash::make($request->get('password')),
-            'username_git'  => $request->get('username_git'),
-            'logradouro'    => $request->get('logradouro'),
-            'complemento'   => $request->get('complemento'),
-            'bairro'        => $request->get('bairro'),
-            'cidade'        => $request->get('cidade'),
-            'estado'        => $request->get('estado'),
-            'linguagem_pref'=> $request->get('linguagem_pref'),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        return response()->json(compact('user', 'token'), 201);
-    }
-
-    public function login(Request $request) {
-        $credentials = $request->all();
-
-        dd(JWTAuth::attempt($request->get('_token')));
-
-        try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_creat_token'], 500);
-        }
-
-        return response()->json( compact('token'));
-    }
-
-    public function getAuthenticatedUser()
-    {
-        try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
-            } 
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return response()->json(['token_expired'], $e->getStatusCode());
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return response()->json(['token_invalid'], $e->getStatusCode());
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json(['token_absent'], $e->getStatusCode());
-        }
-
-        response()->json( compact('user') );
-    }
-
 }

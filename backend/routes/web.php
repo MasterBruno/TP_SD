@@ -30,11 +30,12 @@ Route::group(array('prefix' => 'api'), function() {
 
     Route::resource('users', 'UserController');
 
+    Route::get('users/nome/{nome}', 'UserController@findName')->where('nome', '[A-Za-z]+')->name('findName');
     Route::get('users/cidade/{cidade}', 'UserController@findCity')->name('findCity');
-    Route::get('users/estado/{cidade}', 'UserController@findState')->name('findState');
-    Route::get('users/linguagem/{cidade}', 'UserController@findLanguage')->name('findLanguage');
+    Route::get('users/estado/{estado}', 'UserController@findState')->name('findState');
+    Route::get('users/linguagem/{linguagem}', 'UserController@findLanguage')->name('findLanguage');
     Route::get('users/cidade/{cidade}/linguagem/{linguagem}', 'UserController@findCity_LP')->name('findCity_LP');
-    Route::get('users/estado/{cidade}/linguagem/{linguagem}', 'UserController@findState_LP')->name('findState_LP');
+    Route::get('users/estado/{estado}/linguagem/{linguagem}', 'UserController@findState_LP')->name('findState_LP');
 
 
     /*
