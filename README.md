@@ -7,7 +7,9 @@ Esta a documentação oficial do projeto que busca a integração entre desenvol
 #### Contatos
 
 * Bruno C. Silva : brunoc.15@hotmail.com
-* Isac: timoroan877@gmail.com
+* Isac Mendes: timoroan877@gmail.com
 * José M. Pinto:
 * Matheus A. Fernandes: matheus\_afl@hotmail.com
+
+Para visualizar a documentação completa do projeto, visite: [https://devmunity.gitbook.io/devmunity-1/](https://devmunity.gitbook.io/devmunity-1/).
 
