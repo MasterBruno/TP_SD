@@ -15,5 +15,39 @@ Após seguir estes passos, vamos configurar o projeto para execução:
 
 Inicialmente iremos clonar o repositório do projeto.
 
-`git clone`[`https://github.com/MasterBruno/TP_SD.git`](https://github.com/MasterBruno/TP_SD.git)\`\`
+```text
+git clone https://github.com/MasterBruno/TP_SD.git
+```
+
+Após, dentro da pasta do projeto extraída, vá até a pasta "laradock" e execute via terminal:
+
+```text
+docker-compose up -d nginx mongo workspace
+```
+
+Após o passo anterior, será realizado a montagem dos containers necessário para execução de nossa aplicação, isto é:
+
+* Nginx: Servidor local
+* Mongo: Servidor de banco de dados MongoDB
+* Workspace: Ambiente de desenvolvimento no container para execução de comandos relacionado ao "artisan".
+
+Contudo, após a finalização deste passo, teremos todos nossos container solicitados irão subir. Podemos visualizar através do comando:
+
+```text
+docker ps
+```
+
+Prosseguindo, executaremos o seguinte comando para entrar no container workspace:
+
+```text
+docker-compose exec workspace \bin\bash
+```
+
+Com o workspace em execução, podemos executar:
+
+```text
+artisan serve
+```
+
+Após a execução deste processo, se você abrir seu navegador e informar `localhost:8000` verá que sua API já estará funcionando.
 
