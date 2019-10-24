@@ -46,8 +46,8 @@ docker-compose exec workspace \bin\bash
 Com o workspace em execução, podemos executar:
 
 ```text
-artisan serve
+artisan serve --port=80
 ```
 
-Após a execução deste processo, se você abrir seu navegador e informar `localhost:8000` verá que sua API já estará funcionando.
+Após a execução deste processo, se você abrir seu navegador e informar `localhost:80/api` verá que sua API já estará funcionando.
 
