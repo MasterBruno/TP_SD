@@ -7,6 +7,7 @@ Pensando na proposta do trabalho, foi estabelecido a utilização das seguintes 
 3. [Insomnia](ferramentas.md#insomnia)
 4. [Composer](ferramentas.md#composer)
 5. [Docker e Docker-Compose](ferramentas.md#docker)
+   1. [Laradock](ferramentas.md#docker-e-docker-compose)
 6. [Browsers](ferramentas.md#browsers)
 
 ## Laravel
@@ -39,7 +40,11 @@ Para saber mais sobre o Composer, acesse: "[https://getcomposer.org/](https://ge
 
 O Docker possibilita o empacotamento de uma aplicação ou ambiente inteiro dentro de um container. Um container é uma ferramenta poderosa para gerenciar dependencia de classes. O Docker vem com o intuito de acabar com o famoso " No meu computador funciona bem"? Pois ele envolve o projeto com todas dependencias e pacotes instalados na criação do projeto.
 
+Docker Compose é o orquestrador de containers da Docker. Isto é, reger esse comportamento através do arquivo chamado docker-compose, semelhante ao Dockerfile, escrito em [YAML](http://yaml.org/) \(acrônimo recursivo para YAML Ain’t Markup Language\) é um formato de codificação de dados legíveis por humanos, o que torna fácil de ler e entender o que um Compose faz!
+
 Para saber mais sobre o Docker e o Docker-Compose, acesse: "[https://docs.docker.com/](https://docs.docker.com/)".
+
+Inicialmente, foi utilizado o "laradock'. É um projeto desenvolvido com o objetivo de conectar ferramentas como Docker e Laravel. Para saber mais acesse: "[https://laradock.io/](https://laradock.io/)".
 
 ## Browsers
 

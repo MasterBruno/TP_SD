@@ -8,9 +8,9 @@ description: >-
 
 ## Proposta de Trabalho
 
-Neste momento inicial, o objetivo do trabalho é o desenvolvimento de uma API Restful. Contudo, para este fim, definiu-se que esta API deverá conter, além de dados essenciais como E-mail, dados de localização de desenvolvedores cadastrados ou não no Github. Entretanto, é possível realizar o cadastro com os dados do desenvolvedor e o endereço do mesmo.  
+Neste momento inicial, o objetivo do trabalho é o desenvolvimento de uma API Restful. 
 
-A utilização de uma API para este trabalho se dá pelo fato de que podemos consumir dados de outras API como exemplo a do Github e podemos também consumir nossos próprios dados de outros dispositivos independente da tecnologia utilizada para desenvolvimento.  
+Contudo, para este fim, definiu-se que esta API deverá conter, além de dados essenciais como E-mail, dados de localização de desenvolvedores cadastrados ou não no Github.  
 
 ## Objetivo 
 
