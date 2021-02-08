@@ -13,10 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function(){
+  return response()->json([
+    'name' => config('app.name'),
+    'version' => config('app.version'),
+    'status' => 'OK'
+  ]);
 });
 
-Route::get('/version', function(){
-  return response()->json(['message' => 'Devmunity API', 'status' => 'Conectado']);
+Route::resource('users', 'UserController');
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+  return $request->user();
 });
+
+Auth::routes();
