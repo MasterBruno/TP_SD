@@ -6,52 +6,38 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration
 {
-    protected $connection = 'mongodb';
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+  protected $connection = 'mongodb';
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('users', function($collection)
     {
-        Schema::create('users', function($collection)
-        {
-            $collection->bigIncrements('id');
-            $collection->string('nome');
-            $collection->unique('email');
-            $collection->string('password');
-            $collection->unique('username_git');
-            $collection->string('logradouro');
-            $collection->string('complemento');
-            $collection->string('bairro');
-            $collection->string('cidade');
-            $collection->string('estado');
-            $collection->json('linguagem_pref');
-            $collection->timestamps();
-        });
-        /*
-        Schema::create('usuario', function (Blueprint $collection) {
-            $collection->bigIncrements('id');
-            $collection->string('nome', 30)->text('Nome');
-            $collection->string('username_git', 30)->unique();
-            $collection->string('logradouro');
-            $collection->string('complemento');
-            $collection->string('bairro');
-            $collection->string('cidade');
-            $collection->string('estado');
-            $collection->json('linguagem_pref');
-            $collection->timestamps();
-        });
-        */
-    }
+      $collection->bigIncrements('id');
+      $collection->string('name');
+      $collection->unique('email');
+      $collection->string('password');
+      $collection->unique('username_git');
+      $collection->string('public_place');
+      $collection->string('complement');
+      $collection->string('neighborhood');
+      $collection->string('city');
+      $collection->string('state');
+      $collection->json('preferred_language');
+      $collection->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('users');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('users');
+  }
 }

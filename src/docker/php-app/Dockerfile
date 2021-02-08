@@ -35,5 +35,6 @@ RUN php artisan config:cache
 # Directory permissions
 RUN chmod 777 -R /var/www
 
+# CMD docker-php-entrypoint
 CMD docker-php-entrypoint php-fpm && php artisan serve --host=0.0.0.0 --port=8000
 EXPOSE 8000

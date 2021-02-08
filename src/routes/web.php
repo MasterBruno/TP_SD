@@ -14,65 +14,37 @@ use App\User;
 */
 
 Route::get('/', function () {
-    return redirect('/home');
+  return redirect('/home');
 });
 
 /*
-Route::middleware(['auth'])->group(function () {
-    //All the routes are placed in here
-    Route::get('/', 'Auth\LoginController@index');
-});
-*/
-Route::group(array('prefix' => 'api'), function() {
-    Route::get('/', function(){
-        return response()->json(['message' => 'Devmunity API', 'status' => 'Conectado']);
+Route::group(array('prefix' => 'auth'), function() {
+    //  Autenticação
+    //Route::resource('login', 'Auth\AuthController');
+    
+    Route::get('login', function(){
+        return view('auth.login');
     });
-
-    Route::resource('users', 'UserController');
-
-    Route::get('users/nome/{nome}', 'UserController@findName')->where('nome', '[A-Za-z]+')->name('findName');
-    Route::get('users/cidade/{cidade}', 'UserController@findCity')->name('findCity');
-    Route::get('users/estado/{estado}', 'UserController@findState')->name('findState');
-    Route::get('users/linguagem/{linguagem}', 'UserController@findLanguage')->name('findLanguage');
-    Route::get('users/cidade/{cidade}/linguagem/{linguagem}', 'UserController@findCity_LP')->name('findCity_LP');
-    Route::get('users/estado/{estado}/linguagem/{linguagem}', 'UserController@findState_LP')->name('findState_LP');
-
+    Route::post('login', 'UserController@login')->name('login');
 
     /*
-    Route::group(array('prefix' => 'auth'), function() {
-        //  Autenticação
-        //Route::resource('login', 'Auth\AuthController');
-        
-        Route::get('login', function(){
-            return view('auth.login');
-        });
-        Route::post('login', 'UserController@login')->name('login');
+    Route::post('login', 'Auth\AuthController@postLogin');
+    Route::get('login', 'Auth\AuthController@getLogout');
+    
 
-        /*
-        Route::post('login', 'Auth\AuthController@postLogin');
-        Route::get('login', 'Auth\AuthController@getLogout');
-        
-
-        //  Registração
-        Route::get('register', function(){
-            $user = new User;
-            return view('auth.register', ['user' => $user]);
-        });
-        Route::post('register', 'UserController@register')->name('register');
-        
-        /*
-        Route::get('register', 'Auth\AuthController@getLogin');
-        Route::get('register', 'Auth\AuthController@getLogin');
-        
+    //  Registração
+    Route::get('register', function(){
+        $user = new User;
+        return view('auth.register', ['user' => $user]);
     });
-    */
+    Route::post('register', 'UserController@register')->name('register');
+    
+    /*
+    Route::get('register', 'Auth\AuthController@getLogin');
+    Route::get('register', 'Auth\AuthController@getLogin');
+    
 });
-
-Auth::routes();
-
-Route::get('/version', function(){
-  return response()->json(['message' => 'Devmunity API', 'status' => 'Conectado']);
-});
+*/
 
 Route::get('/home', 'HomeController@index')->name('home');
 

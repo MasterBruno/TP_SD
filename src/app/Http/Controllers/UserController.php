@@ -7,7 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-use App\User;
+use App\Models\User;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
@@ -19,204 +19,187 @@ use Tymon\JWTAuth\JWTManager as JWT;
 class UserController extends Controller
 {
 
-    public function __construct(){
-        $this->middleware('auth', ['only' => ['update', 'destroy', 'edit']]);
+  public function __construct(){
+    $this->middleware('auth', ['only' => ['update', 'destroy', 'edit']]);
+  }
+
+  /**
+   * Display a listing of the resource.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function index(Request $request)
+  {
+    try {
+      $query = $this->getQueryWithUrlParameters($request);
+
+      $users = $query->get();
+      
+      return response()->json($users);
+    } catch (Throwable $exception) {
+      error_log("Erro interno:", $exception->getMessage());
+      return response()->json([
+        'message' => 'Erro interno',
+        'error' => $exception->getMessage()
+      ], 500);
     }
+  }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $users = User::all();
-        return response()->json($users);
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+      //
+  }
+
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+
+  public function store(Request $request)
+  {
+    try {
+      $user = new User();
+      $user->fill($request->all());
+      $user->save();
+
+      return response()->json($user, 201);
+    } catch (Throwable $exception) {
+      error_log("Erro interno:", $exception->getMessage());
+      return response()->json([
+        'message' => 'Erro interno',
+        'error' => $exception->getMessage()
+      ], 500);
     }
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    try {
+      $users = User::find($id);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-    public function store(Request $request)
-    {
-        $user = new User();
-        $user->fill($request->all());
-        $user->save();
-
-        return response()->json($user, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $users = User::find($id);
-
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        return response()->json($users);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $users = User::find($id);
-
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        $users->fill($request->all());
-        $users->save();
-
-        return response()->json($users);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $users = User::find($id);
-
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        $users->delete();
-
+      if(empty($users)) {
         return response()->json([
-            'message' => 'Registro Deletado.'
-        ], 200);
+          'message' => 'User not found.'
+        ], 404);
+      }
+      return response()->json($users);
+    } catch (Throwable $exception) {
+      error_log("Erro interno:", $exception->getMessage());
+      return response()->json([
+        'message' => 'Erro interno',
+        'error' => $exception->getMessage()
+      ], 500);
     }
+  }
 
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+      //
+  }
 
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    try {
+      $users = User::find($id);
 
-    //  Metodo extras
-    //  Buscar usuário por nome
-    public function findName($nome) {
-        $users = User::where('nome', 'LIKE', "%$nome%")->get();
+      if(empty($users)) {
+        return response()->json([
+          'message' => 'User not found.'
+        ], 404);
+      }
+      $users->fill($request->all());
+      $users->save();
 
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        return response()->json($users);
+      return response()->json($users);
+    } catch (Throwable $exception) {
+      error_log("Erro interno:", $exception->getMessage());
+      return response()->json([
+        'message' => 'Erro interno',
+        'error' => $exception->getMessage()
+      ], 500);
     }
+  }
 
-    //  Buscar usuário por cidade
-    public function findCity($cidade) {
-        $users = User::where('cidade', 'LIKE', "%$cidade%")->get();
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    try {
+      $users = User::find($id);
 
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
+      if(empty($users)) {
+        return response()->json([
+          'message' => 'User not found.'
+        ], 404);
+      }
 
-        return response()->json($users);
+      $users->delete();
+
+      return response()->json([
+        'message' => 'Deleted record.'
+      ], 200);
+    } catch (Throwable $exception) {
+      error_log("Erro interno:", $exception->getMessage());
+      return response()->json([
+        'message' => 'Erro interno',
+        'error' => $exception->getMessage()
+      ], 500);
     }
+  }
 
-    //  Buscar usuário por estado
-    public function findState($estado) {
-        $users = User::where('estado', 'LIKE', "%$estado%")->get();
+  /**
+   * @param  \Illuminate\Http\Request  $request
+   */
+  private function getQueryWithUrlParameters(Request $request){
+    $name = $request->get('name');
+    $city = $request->get('city');
+    $state = $request->get('state');
+    $language = $request->get('language');
 
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        return response()->json($users);
+    $query = User::query();
+    if ($name) {
+      $query->where('name', 'LIKE', "%$name%");
     }
-
-    //  Buscar usuário por linguagem preferida
-    public function findLanguage($language) {
-        $users = User::where('linguagem_pref', 'LIKE', "%$language%")->get();
-
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        return response()->json($users);
+    if ($city) {
+      $query->where('city', 'LIKE', "%$city%");
     }
-
-
-    //  Buscar usuário por cidade e linguagem preferida
-    public function findCity_LP($cidade, $language) {
-        $users = User::where('cidade', 'LIKE', "%$cidade%")
-                     ->where('linguagem_pref', 'LIKE', "%$language%")->get();
-
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        return response()->json($users);
+    if ($state) {
+      $query->where('state', 'LIKE', "%$state%");
     }
-
-    //  Buscar usuário por estado e linguagem preferida
-    public function findState_LP($estado, $language) {
-        $users = User::where('estado', 'LIKE', "%$estado%")
-                     ->where('linguagem_pref', 'LIKE', "%$language%")->get();
-
-        if(empty($users)) {
-            return response()->json([
-                'message' => 'Não encontrado.'
-            ], 404);
-        }
-
-        return response()->json($users);
+    if ($language) {
+      $query->where('preferred_language', 'LIKE', "%$language%");
     }
+    return $query;
+  }
 }
