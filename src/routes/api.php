@@ -15,22 +15,13 @@ use Illuminate\Http\Request;
 
 Route::get('/', function(){
   return response()->json([
-    'name' => 'Devmunity API',
-    'version' => '1.0.0',
+    'name' => config('app.name'),
+    'version' => config('app.version'),
     'status' => 'OK'
   ]);
 });
 
 Route::resource('users', 'UserController');
-
-Route::group(array('prefix' => '/users'), function() {
-  Route::get('/nome/{nome}', 'UserController@findName')->where('nome', '[A-Za-z]+')->name('findName');
-  Route::get('/cidade/{cidade}', 'UserController@findCity')->name('findCity');
-  Route::get('/estado/{estado}', 'UserController@findState')->name('findState');
-  Route::get('/linguagem/{linguagem}', 'UserController@findLanguage')->name('findLanguage');
-  Route::get('/cidade/{cidade}/linguagem/{linguagem}', 'UserController@findCity_LP')->name('findCity_LP');
-  Route::get('/estado/{estado}/linguagem/{linguagem}', 'UserController@findState_LP')->name('findState_LP');
-});
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
   return $request->user();
